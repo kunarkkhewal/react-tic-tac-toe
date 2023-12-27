@@ -8,6 +8,7 @@ function App() {
     Array.from({ length: 3 }, () => Array(3).fill(""))
   );
   const [winner, setWinner] = useState<string>('');
+  const [winningCondition, setWinningCondition] = useState<number[][]>([]);
 
   const handleSquareClick = (num1: number, num2: number): void => {
     if (winner || matrixValues[num1][num2]) { 
@@ -39,6 +40,7 @@ function App() {
     for(let index = 0; index < conditions.length; index++) {
       const [a, b, c] = conditions[index];
       if (matrixValues[a[0]][a[1]] && matrixValues[a[0]][a[1]] === matrixValues[b[0]][b[1]] && matrixValues[a[0]][a[1]] === matrixValues[c[0]][c[1]]) {
+        setWinningCondition(conditions[index]);
         return matrixValues[a[0]][a[1]];
       }
     }
@@ -58,7 +60,11 @@ function App() {
           [0, 1, 2].map((col) => (
             <span
               key={`${row}-${col}`}
-              className="border border-black h-12 w-12 rounded-lg mx-auto"
+              className={"border border-black h-12 w-12 rounded-lg mx-auto" + winningCondition.map(pos => {
+                if (pos[0] === row && pos[1] === col) {
+                  return ' border-red-500 border-4 font-bold '
+                }
+              })}
               onClick={() => handleSquareClick(row, col)}
             >
               {matrixValues[row][col]}
