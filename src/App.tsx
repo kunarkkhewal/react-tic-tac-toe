@@ -9,6 +9,9 @@ function App() {
   );
 
   const handleSquareClick = (num1: number, num2: number): void => {
+    if (matrixValues[num1][num2]) { 
+      return;
+    }
     const updatedMatrix: MatrixValues = [...matrixValues];
     updatedMatrix[num1][num2] = isXTurn ? 'X' : 'O';
     setMatrixValues(updatedMatrix);
