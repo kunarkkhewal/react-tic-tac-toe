@@ -56,24 +56,33 @@ function App() {
     return null;
   }
 
+  const getWinningClass = (row:  number, col: number): string => {
+    for(let index = 0; index < winningCondition.length; index++) {
+      if (winningCondition[index][0] === row && winningCondition[index][1] === col) {
+        return ' border-yellow-600 border-4 font-bold text-yellow-600 duration-300 scale-125 animate-pulse ';
+        break;
+      }
+
+    }
+    return ''
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center">
-      <p className="text-xl font-bold text-red-700 text-center">
-        Hello Duniya, welcome to TIC-TAC-TOE
-      </p>
-      <p className="text-xl font-bold text-red-700 text-center">
-        {winner ? `winner is ${winner}` : totalMoves === 9 ? 'Game tied' : ''}
-      </p>
-      <div className="grid grid-rows-3 grid-cols-3 gap-0 w-36 mx-auto">
+    <div className="relative p-4 flex flex-col items-center justify-center bg-blue-950 h-screen w-full">
+      <div className="absolute top-5 flex flex-col space-y-5 items-center flex-start">
+        <p className="text-xl font-bold text-gray-300 text-center">
+          Welcome, to the game of <span>TIC-TAC-TOE</span>
+        </p>
+        <p className="text-5xl font-bold text-yellow-600 text-center">
+          {winner ? `${winner} Wins` : totalMoves === 9 ? 'Game tied' : ''}
+        </p>
+      </div>
+      <div className="grid grid-rows-3 grid-cols-3 gap-5 mx-auto">
         {[0, 1, 2].map((row) =>
           [0, 1, 2].map((col) => (
             <span
               key={`${row}-${col}`}
-              className={"border border-black h-12 w-12 rounded-lg mx-auto" + winningCondition.map(pos => {
-                if (pos[0] === row && pos[1] === col) {
-                  return ' border-red-500 border-4 font-bold '
-                }
-              })}
+              className={"border shadow-lg shadow-blue-500/30 h-20 w-20 rounded-lg text-5xl text-center pt-3 text-gray-300 " + getWinningClass(row, col)}
               onClick={() => handleSquareClick(row, col)}
             >
               {matrixValues[row][col]}
@@ -84,7 +93,7 @@ function App() {
       {
         (winner || totalMoves === 9) &&
         <button 
-          className="mx-auto border-2 border-red-700 px-4 py-3 rounded-lg shadow-md"
+          className="absolute bottom-5 mx-auto text-gray-300 bg-yellow-800 px-4 py-3 border-0 rounded-lg shadow-md"
           onClick={() => {resetGame()}}
         >
           Wanna play again?
